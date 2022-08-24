@@ -27,3 +27,7 @@ pip install -r requirements.txt
 ```
 
 6. Run and Enjoy!
+
+```bash
+python my_bitly.py
+```
