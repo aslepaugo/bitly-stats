@@ -26,15 +26,12 @@ def count_clicks(token, url):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    params = {
-        "units": -1
-    }
-    bitlink_without_protocol = "".join(urlparse(url)[1:])
+    parsed_url = urlparse(url)
+    bitlink_without_protocol = f"{parsed_url.netloc}{parsed_url.path}"
 
     response = requests.get(
         f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink_without_protocol}/clicks/summary",
-        headers=headers,
-        params=params
+        headers=headers
     )
     response.raise_for_status()
 
@@ -45,8 +42,8 @@ def is_bitlink(token, url):
     headers = {
         "Authorization": f"Bearer {token}"
     }
-    parsed = urlparse(url)
-    bitlink = f"{parsed.netloc}{parsed.path}"
+    parsed_url = urlparse(url)
+    bitlink = f"{parsed_url.netloc}{parsed_url.path}"
 
     response = requests.get(
         f"https://api-ssl.bitly.com/v4/bitlinks/{bitlink}",
