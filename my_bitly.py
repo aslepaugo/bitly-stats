@@ -1,3 +1,4 @@
+import argparse
 import os
 import requests
 
@@ -53,15 +54,20 @@ def is_bitlink(token, url):
     return response.ok
 
 
+def get_arguments():
+    parser = argparse.ArgumentParser(description="Manage bitlinks and preview basic stats for it")
+    parser.add_argument("url", help="URL to shorten or Bitly link to review stats")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
     load_dotenv()
     token = os.getenv("BITLY_TOKEN")
-    url = input("Please enter URL for shortener or bit.ly url to get clicks count: ")
-
+    args = get_arguments()
     try:
-        if is_bitlink(token, url):
-            print(f"Clicks count = {count_clicks(token, url)}")
+        if is_bitlink(token, args.url):
+            print(f"Clicks count = {count_clicks(token, args.url)}")
         else:
-            print(f"Shortened url - {shorten_link(token, url)}")
+            print(f"Shortened url - {shorten_link(token, args.url)}")
     except requests.exceptions.HTTPError:
         print("Something goes wrong")
